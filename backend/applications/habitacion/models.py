@@ -10,3 +10,9 @@ class Habitacion(models.Model):
     hotel = models.ForeignKey(Hotel, verbose_name="Hotel", on_delete=models.CASCADE)
     numero = models.IntegerField(verbose_name="Número de la habitación")
     ocupado = models.CharField(verbose_name="Ocupada", max_length=2, choices=OCUPADO_CHOICES)
+
+    class Meta:
+        verbose_name_plural = "Habitaciones"
+    
+    def __str__(self) -> str:
+        return "(" + self.hotel.nombre + ") " + str(self.numero)

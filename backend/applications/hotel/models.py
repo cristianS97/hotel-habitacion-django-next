@@ -8,3 +8,9 @@ class Hotel(models.Model):
     comuna = models.CharField(verbose_name="Comuna", max_length=50)
     telefono = models.IntegerField(verbose_name="Número telefonico")
     email = models.EmailField(verbose_name="Correo eléctronico")
+
+    class Meta:
+        verbose_name_plural = "Hoteles"
+
+    def __str__(self) -> str:
+        return self.nombre + ", " + self.comuna
