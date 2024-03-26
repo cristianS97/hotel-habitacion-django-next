@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Mis apps
     "applications.hotel",
-    "applications.habitacion"
+    "applications.habitacion",
+    "rest_framework"
 ]
 
 MIDDLEWARE = [

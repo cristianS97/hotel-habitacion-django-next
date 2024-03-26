@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import HotelListView
+from .views import HotelListView, HotelListAPIView
 
 urlpatterns = [
-    path("", HotelListView.as_view(), name="hoteles"),
+    path("hotel/", HotelListView.as_view(), name="hoteles"),
+    path("api/hotel/", HotelListAPIView.as_view(), name="hotelesAPI")
 ]
