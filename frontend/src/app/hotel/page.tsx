@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
+import Link from 'next/link';
 
 interface IHotel {
   "id": number,
@@ -53,31 +54,37 @@ export default function Hotel() {
               <th scope="col" className="px-6 py-3">
                 Email
               </th>
+              <th scope="col" className="px-6 py-3">
+                Acción
+              </th>
             </tr>
           </thead>
           <tbody>
             {hoteles.map(hotel => (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <tr key={hotel.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["id"]}
+                  {hotel.id}
                 </th>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["nombre"]}
+                  {hotel.nombre}
                 </th>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["calle"]}
+                  {hotel.calle}
                 </th>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["numero"]}
+                  #{hotel.numero}
                 </th>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["comuna"]}
+                  {hotel.comuna}
                 </th>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["telefono"]}
+                  {hotel.telefono}
                 </th>
                 <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                  {hotel["email"]}
+                  {hotel.email}
+                </th>
+                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href={'habitacion?idHotel=' + hotel.id}>Habitaciones</Link>
                 </th>
               </tr>
             ))}
