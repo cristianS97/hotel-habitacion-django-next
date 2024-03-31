@@ -2,13 +2,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-
-interface IHabitacion {
-  "id": number,
-  "hotel": number,
-  "numero": number,
-  "ocupado": string,
-}
+import IHabitacion from '@/interfaces/interfaceHabitacion';
+import { useFetchData } from "@/hooks/useFetchData";
 
 export default function Hotel() {
   const searchParams = useSearchParams();
@@ -16,13 +11,7 @@ export default function Hotel() {
   const [habitaciones, setHabitaciones] = useState<IHabitacion[]>([]);
 
   useEffect(() => {
-    const getHabitaciones = () => {
-      fetch("http://localhost:8000/api/habitacion?idHotel="+idHotel)
-        .then(response => response.json())
-        .then(data => setHabitaciones(data));
-    }
-
-    getHabitaciones();
+    useFetchData("http://localhost:8000/api/habitacion?idHotel="+idHotel, setHabitaciones);
   }, [])
 
   return (
@@ -47,15 +36,15 @@ export default function Hotel() {
           <tbody>
             {habitaciones.map(habitacion => (
               <tr key={habitacion.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {habitacion.id}
-                </th>
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                </td>
+                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {habitacion.numero}
-                </th>
-                <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                </td>
+                <td scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                   {habitacion.ocupado}
-                </th>
+                </td>
               </tr>
             ))}
           </tbody>
