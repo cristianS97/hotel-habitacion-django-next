@@ -15,35 +15,40 @@ export default function Hotel() {
   const searchParams = useSearchParams();
   const idHotel = searchParams.get("idHotel");
   const [habitaciones, setHabitaciones] = useState<IHabitacion[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    useFetchData("http://localhost:8000/api/habitacion?idHotel="+idHotel, setHabitaciones);
+    useFetchData("http://localhost:8000/api/habitacion?idHotel="+idHotel, setHabitaciones, setLoading);
   }, [])
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
       <h1>Listado de habitaciones<br/><Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href={'hotel'}>Volver a hoteles</Link></h1>
 
-      <div className="relative overflow-x-auto">
-        <Table>
-          <THead>
-            <Row headerRow={true}>
-              <TH value="Id" />
-              <TH value="Número" />
-              <TH value="Ocupada" />
-            </Row>
-          </THead>
-          <TBody>
-            {habitaciones.map(habitacion => (
-              <Row key={habitacion.id} headerRow={false}>
-                <Cell value={habitacion.id} />
-                <Cell value={habitacion.numero} />
-                <Cell value={habitacion.ocupado} />
+      {loading ? 
+        <div className="loader mt-5"></div>
+        :
+        <div className="relative overflow-x-auto">
+          <Table>
+            <THead>
+              <Row headerRow={true}>
+                <TH value="Id" />
+                <TH value="Número" />
+                <TH value="Ocupada" />
               </Row>
-            ))}
-          </TBody>
-        </Table>
-      </div>
+            </THead>
+            <TBody>
+              {habitaciones.map(habitacion => (
+                <Row key={habitacion.id} headerRow={false}>
+                  <Cell value={habitacion.id} />
+                  <Cell value={habitacion.numero} />
+                  <Cell value={habitacion.ocupado} />
+                </Row>
+              ))}
+            </TBody>
+          </Table>
+        </div>
+      }
     </main>
   );
 }
