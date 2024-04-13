@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from 'next/link';
 import IHotel from "@/interfaces/interfaceHotel";
+import IHabitacion from "@/interfaces/interfaceHabitacion";
 import { useFetchData } from "@/hooks/useFetchData";
 import { Table } from "@/components/Table";
 import { THead } from "@/components/THead";
@@ -16,8 +17,14 @@ export default function Hotel() {
   const [loading, setLoading] = useState<boolean>(true);
   const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
+  const fetchData = useFetchData({
+    url: "http://localhost:8000/api/hotel",
+    setData: (data: IHotel[] | IHabitacion[]) => setHoteles(data as IHotel[]),
+    setLoading: setLoading
+  });
+
   useEffect(() => {
-    useFetchData("http://localhost:8000/api/hotel", setHoteles, setLoading);
+    fetchData();
   }, [])
 
   return (
