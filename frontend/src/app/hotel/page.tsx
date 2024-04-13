@@ -9,10 +9,12 @@ import { Row } from "@/components/Row";
 import { TH } from "@/components/TH";
 import { TBody } from "@/components/TBody";
 import { Cell } from "@/components/Cell";
+import { Modal } from "@/components/Modal";
 
 export default function Hotel() {
   const [hoteles, setHoteles] = useState<IHotel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
 
   useEffect(() => {
     useFetchData("http://localhost:8000/api/hotel", setHoteles, setLoading);
@@ -26,6 +28,9 @@ export default function Hotel() {
         <div className="loader mt-5"></div>
         :
         <div className="relative overflow-x-auto">
+          <button onClick={() => setVisibleModal(true)} className="text-white bg-blue-800 dark:bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mb-5">
+            Registrar un hotel
+          </button>
           <Table>
             <THead>
               <Row headerRow={true}>
@@ -56,6 +61,11 @@ export default function Hotel() {
           </Table>
         </div>
       }
+      {visibleModal ?
+        <Modal
+          setVisibleModal={setVisibleModal}
+        />
+      : null}
     </main>
   );
 }
