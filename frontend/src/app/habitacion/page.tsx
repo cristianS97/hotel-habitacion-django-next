@@ -12,19 +12,18 @@ import { TH } from "@/components/TH";
 import { TBody } from "@/components/TBody";
 import { Cell } from "@/components/Cell";
 
-export default function Hotel() {
+export default function HabitacionView() {
   const searchParams = useSearchParams();
   const idHotel = searchParams.get("idHotel");
   const [habitaciones, setHabitaciones] = useState<IHabitacion[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = useFetchData({
+    useFetchData({
       url: "http://localhost:8000/api/habitacion?idHotel="+idHotel,
       setData: (data: IHotel[] | IHabitacion[]) => setHabitaciones(data as IHabitacion[]),
       setLoading: setLoading
     });
-    fetchData();
   }, [])
 
   return (
