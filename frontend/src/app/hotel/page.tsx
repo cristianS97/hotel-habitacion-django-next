@@ -12,11 +12,12 @@ import { TH } from "@/components/TH";
 import { TBody } from "@/components/TBody";
 import { Cell } from "@/components/Cell";
 import { Modal } from "@/components/Modal";
+import { FormularioCrearHotel } from "@/components/FormularioCrearHotel";
 
 export default function HotelView() {
   const [hoteles, setHoteles] = useState<IHotel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
-  const [visibleModal, setVisibleModal] = useState<boolean>(false);
+  const [visibleModalRegistro, setVisibleModalRegistro] = useState<boolean>(false);
   const [nuevoHotel, setNuevoHotel] = useState<Hotel>({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""});
 
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function HotelView() {
       method: 'POST',
       nuevaData: nuevoHotel,
       listaObjetos: hoteles,
-      setVisibleModal: setVisibleModal,
+      setVisibleModal: setVisibleModalRegistro,
       setNuevaData: setNuevoHotel
     });
   };
@@ -58,7 +59,7 @@ export default function HotelView() {
         <div className="loader mt-5"></div>
         :
         <div className="relative overflow-x-auto">
-          <button onClick={() => setVisibleModal(true)} className="text-white bg-blue-800 dark:bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mb-5">
+          <button onClick={() => setVisibleModalRegistro(true)} className="text-white bg-blue-800 dark:bg-blue-700 hover:bg-blue-800 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mb-5">
             Registrar un hotel
           </button>
           <Table>
@@ -72,6 +73,7 @@ export default function HotelView() {
                 <TH value="Telefono" />
                 <TH value="Email" />
                 <TH value="Ver habitaciones" />
+                <TH value="Acciones" />
               </Row>
             </THead>
             <TBody>
@@ -85,19 +87,24 @@ export default function HotelView() {
                   <Cell value={hotel.telefono} />
                   <Cell value={hotel.email} />
                   <Cell value={<Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href={'habitacion?idHotel=' + hotel.id}>Habitaciones</Link>} />
+                  <Cell value={<div className="grid grid-cols-2 gap-4">
+                                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
+                                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+                              </div>} />
                 </Row>
               ))}
             </TBody>
           </Table>
         </div>
       }
-      {visibleModal ?
-        <Modal
-          setVisibleModal={setVisibleModal}
-          handleHotelSubmit={handleHotelSubmit}
-          handleHotelChange={handleHotelChange}
-          nuevoHotel={nuevoHotel}
-        />
+      {visibleModalRegistro ?
+        <Modal setVisible={setVisibleModalRegistro}>
+          <FormularioCrearHotel
+            handleHotelSubmit={handleHotelSubmit}
+            handleHotelChange={handleHotelChange}
+            nuevoHotel={nuevoHotel}
+          />
+        </Modal>
       : null}
     </main>
   );
