@@ -29,7 +29,15 @@ export const useFetchData = ({url, setData, setLoading, method='GET', nuevaData=
         fetch(url, conf)
         .then(response => response.json())
         .then(data => {
-            setData([...listaObjetos, data])
+            console.log(data)
+            if(method == 'POST')
+            {
+                setData([...listaObjetos, data])
+            }
+            else if(method == 'PUT')
+            {
+                setData([...listaObjetos.filter(objeto => objeto.id !== data.id), data])
+            }
             if(setVisibleModal)
             {
                 setVisibleModal(false)

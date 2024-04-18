@@ -12,18 +12,19 @@ import { TH } from "@/components/TH";
 import { TBody } from "@/components/TBody";
 import { Cell } from "@/components/Cell";
 import { Modal } from "@/components/Modal";
-import { FormularioCrearHotel } from "@/components/FormularioCrearHotel";
+import { FormularioHotel } from "@/components/FormularioHotel";
 
 export default function HotelView() {
   const [hoteles, setHoteles] = useState<IHotel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [visibleModalRegistro, setVisibleModalRegistro] = useState<boolean>(false);
+  const [visibleModalActualizar, setVisibleModalActualizar] = useState<boolean>(false);
   const [nuevoHotel, setNuevoHotel] = useState<Hotel>({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""});
 
   useEffect(() => {
     useFetchData({
       url: "http://localhost:8000/api/hotel",
-      setData: (data: IHotel[] | IHabitacion[]) => setHoteles(data as IHotel[]),
+      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading
     });
   }, [])
@@ -41,7 +42,7 @@ export default function HotelView() {
 
     useFetchData({
       url: "http://localhost:8000/api/hotel/crear/",
-      setData: (data: IHotel[] | IHabitacion[]) => setHoteles(data as IHotel[]),
+      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'POST',
       nuevaData: nuevoHotel,
@@ -50,6 +51,42 @@ export default function HotelView() {
       setNuevaData: setNuevoHotel
     });
   };
+
+  const iniciaActualizacion = (idHotel:number):void => {
+    setVisibleModalActualizar(true)
+
+    useFetchData({
+      url: `http://localhost:8000/api/hotel/${idHotel}`,
+      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setNuevoHotel(data as Hotel),
+      setLoading: setLoading,
+      method: 'GET',
+      nuevaData: nuevoHotel,
+      listaObjetos: hoteles,
+      setVisibleModal: setVisibleModalRegistro,
+      setNuevaData: setNuevoHotel
+    });
+  }
+
+  const handleUpdate = (e: React.FormEvent<HTMLFormElement>, idHotel:number):void => {
+    e.preventDefault();
+
+    useFetchData({
+      url: `http://localhost:8000/api/hotel/actualizar/${idHotel}`,
+      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
+      setLoading: setLoading,
+      method: 'PUT',
+      nuevaData: nuevoHotel,
+      listaObjetos: hoteles,
+      setVisibleModal: setVisibleModalActualizar,
+      setNuevaData: setNuevoHotel
+    });
+  }
+
+  useEffect(() => {
+    if(!visibleModalActualizar) {
+      setNuevoHotel({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""})
+    }
+  }, [visibleModalActualizar])
 
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
@@ -88,7 +125,7 @@ export default function HotelView() {
                   <Cell value={hotel.email} />
                   <Cell value={<Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href={'habitacion?idHotel=' + hotel.id}>Habitaciones</Link>} />
                   <Cell value={<div className="grid grid-cols-2 gap-4">
-                                  <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
+                                  <button onClick={() => iniciaActualizacion(hotel.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
                                   <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
                               </div>} />
                 </Row>
@@ -99,10 +136,24 @@ export default function HotelView() {
       }
       {visibleModalRegistro ?
         <Modal setVisible={setVisibleModalRegistro}>
-          <FormularioCrearHotel
+          <FormularioHotel
             handleHotelSubmit={handleHotelSubmit}
             handleHotelChange={handleHotelChange}
             nuevoHotel={nuevoHotel}
+            tituloModal="Registra tu hotel"
+            textoBoton="Registrar"
+          />
+        </Modal>
+      : null}
+
+      {visibleModalActualizar ?
+        <Modal setVisible={setVisibleModalActualizar}>
+          <FormularioHotel
+            handleHotelSubmit={(e) => handleUpdate(e, nuevoHotel.id)}
+            handleHotelChange={handleHotelChange}
+            nuevoHotel={nuevoHotel}
+            tituloModal="Actualiza tu hotel"
+            textoBoton="Actualizar"
           />
         </Modal>
       : null}
