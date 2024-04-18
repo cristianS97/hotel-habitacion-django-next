@@ -14,7 +14,17 @@ class HotelListAPIView(generics.ListAPIView):
     serializer_class = HotelSerializer
     queryset = Hotel.objects.all()
 
+class HotelRetrieveAPIView(generics.RetrieveAPIView):
+    model = Hotel
+    serializer_class = HotelSerializer
+    queryset = Hotel.objects.all()
+
 class HotelCreateAPIView(generics.CreateAPIView):
+    model = Hotel
+    serializer_class = HotelSerializer
+    queryset = Hotel.objects.all()
+
+class HotelUpdateAPIView(generics.UpdateAPIView):
     model = Hotel
     serializer_class = HotelSerializer
     queryset = Hotel.objects.all()
