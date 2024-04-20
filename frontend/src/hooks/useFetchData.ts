@@ -18,7 +18,6 @@ export const useFetchData = ({url, setData, setLoading, method='GET', nuevaData=
     else
     {
         const hotel:Hotel = new Hotel(nuevaData);
-
         const conf = {
             method: method,
             headers: {
@@ -29,7 +28,6 @@ export const useFetchData = ({url, setData, setLoading, method='GET', nuevaData=
         fetch(url, conf)
         .then(response => response.json())
         .then(data => {
-            console.log(data)
             if(method == 'POST')
             {
                 setData([...listaObjetos, data])
@@ -38,14 +36,28 @@ export const useFetchData = ({url, setData, setLoading, method='GET', nuevaData=
             {
                 setData([...listaObjetos.filter(objeto => objeto.id !== data.id), data])
             }
-            if(setVisibleModal)
+        })
+        .catch(error => {
+            if(method == 'DELETE')
             {
-                setVisibleModal(false)
+                setData(listaObjetos.filter(obj => obj.id !== nuevaData.id) as Hotel[])
+                if(setVisibleModal)
+                {
+                    setVisibleModal(false)
+                }
+            }
+            else
+            {
+                console.log(error)
             }
         })
         .finally(() => {
             if (setNuevaData) {
                 setNuevaData({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""});
+            }
+            if(setVisibleModal)
+            {
+                setVisibleModal(false)
             }
             setLoading(false)
         })

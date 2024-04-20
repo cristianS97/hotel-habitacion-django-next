@@ -13,12 +13,14 @@ import { TBody } from "@/components/TBody";
 import { Cell } from "@/components/Cell";
 import { Modal } from "@/components/Modal";
 import { FormularioHotel } from "@/components/FormularioHotel";
+import { FormularioEliminar } from "@/components/FormularioEliminar";
 
 export default function HotelView() {
   const [hoteles, setHoteles] = useState<IHotel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [visibleModalRegistro, setVisibleModalRegistro] = useState<boolean>(false);
   const [visibleModalActualizar, setVisibleModalActualizar] = useState<boolean>(false);
+  const [visibleModalEliminar, setVisibleModalEliminar] = useState<boolean>(false);
   const [nuevoHotel, setNuevoHotel] = useState<Hotel>({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""});
 
   useEffect(() => {
@@ -82,6 +84,29 @@ export default function HotelView() {
     });
   }
 
+  const handleDelete = (idHotel:number):void => {
+    setVisibleModalEliminar(true)
+    setNuevoHotel({...nuevoHotel, id:idHotel})
+  }
+
+  const cancelDelete = ():void => {
+    setVisibleModalEliminar(false)
+    setNuevoHotel({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""})
+  }
+
+  const confirmDelete = () => {
+    useFetchData({
+      url: `http://localhost:8000/api/hotel/eliminar/${nuevoHotel.id}`,
+      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
+      setLoading: setLoading,
+      method: 'DELETE',
+      nuevaData: nuevoHotel,
+      listaObjetos: hoteles,
+      setVisibleModal: setVisibleModalEliminar,
+      setNuevaData: setNuevoHotel
+    });
+  }
+
   useEffect(() => {
     if(!visibleModalActualizar) {
       setNuevoHotel({id: 0, nombre: "", calle: "", numero: 0, comuna: "", telefono: 0, email: ""})
@@ -126,7 +151,7 @@ export default function HotelView() {
                   <Cell value={<Link className="font-medium text-blue-600 dark:text-blue-500 hover:underline" href={'habitacion?idHotel=' + hotel.id}>Habitaciones</Link>} />
                   <Cell value={<div className="grid grid-cols-2 gap-4">
                                   <button onClick={() => iniciaActualizacion(hotel.id)} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Editar</button>
-                                  <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
+                                  <button onClick={() => handleDelete(hotel.id)} className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Eliminar</button>
                               </div>} />
                 </Row>
               ))}
@@ -154,6 +179,16 @@ export default function HotelView() {
             nuevoHotel={nuevoHotel}
             tituloModal="Actualiza tu hotel"
             textoBoton="Actualizar"
+          />
+        </Modal>
+      : null}
+
+      {visibleModalEliminar ?
+        <Modal setVisible={setVisibleModalEliminar}>
+          <FormularioEliminar
+            cancelDelete={cancelDelete}
+            confirmDelete={confirmDelete}
+            titulo="Seguro que quieres eliminar el hotel?"
           />
         </Modal>
       : null}

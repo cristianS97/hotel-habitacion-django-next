@@ -5,7 +5,7 @@ import Hotel from "@/clases/Hotel"
 
 export default interface IFetch {
     url:string,
-    setData: (data:IHotel[] | IHabitacion[] | Hotel) => void,
+    setData: (data:IHotel[] | IHabitacion[] | Hotel | Hotel[]) => void,
     setLoading: (loading:boolean) => void,
     method?:string,
     nuevaData?: Hotel,

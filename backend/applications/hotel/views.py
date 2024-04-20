@@ -28,3 +28,8 @@ class HotelUpdateAPIView(generics.UpdateAPIView):
     model = Hotel
     serializer_class = HotelSerializer
     queryset = Hotel.objects.all()
+
+class HotelDestroyAPIView(generics.DestroyAPIView):
+    model = Hotel
+    serializer_class = HotelSerializer
+    queryset = Hotel.objects.all()

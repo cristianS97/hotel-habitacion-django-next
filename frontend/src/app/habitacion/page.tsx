@@ -21,7 +21,7 @@ export default function HabitacionView() {
   useEffect(() => {
     useFetchData({
       url: "http://localhost:8000/api/habitacion?idHotel="+idHotel,
-      setData: (data: IHotel[] | IHabitacion[]) => setHabitaciones(data as IHabitacion[]),
+      setData: (data: (IHotel | IHabitacion)[]) => setHabitaciones(data as IHabitacion[]),
       setLoading: setLoading
     });
   }, [])
