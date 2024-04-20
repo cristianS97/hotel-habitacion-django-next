@@ -43,7 +43,7 @@ export default function HotelView() {
     e.preventDefault();
 
     useFetchData({
-      url: "http://localhost:8000/api/hotel/crear/",
+      url: "http://localhost:8000/api/hotel/",
       setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'POST',
@@ -73,7 +73,7 @@ export default function HotelView() {
     e.preventDefault();
 
     useFetchData({
-      url: `http://localhost:8000/api/hotel/actualizar/${idHotel}`,
+      url: `http://localhost:8000/api/hotel/${idHotel}`,
       setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'PUT',
@@ -96,7 +96,7 @@ export default function HotelView() {
 
   const confirmDelete = () => {
     useFetchData({
-      url: `http://localhost:8000/api/hotel/eliminar/${nuevoHotel.id}`,
+      url: `http://localhost:8000/api/hotel/${nuevoHotel.id}`,
       setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'DELETE',
