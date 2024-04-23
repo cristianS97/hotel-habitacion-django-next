@@ -16,6 +16,8 @@ jobs:
         with:
           python-version: '3.9'
       - name: Muestra ruta
+        run: ls /home/runner/work/hotel-habitacion-django-next/hotel-habitacion-django-next/backend/
+      - name: Muestra archivos
         run: pwd
       - name: Install dependencies
         run: |
