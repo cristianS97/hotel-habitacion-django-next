@@ -22,8 +22,10 @@ jobs:
       - name: Coverage report
         run: |
           pip install coverage
-          coverage run ./backend/manage.py test applications.hotel.tests
+          coverage run manage.py test applications.hotel.tests
           coverage report 
+        working-directory: ./backend
       - name: Django testing
         run: |
-          python3 ./backend/manage.py test applications.hotel.tests
+          python3 manage.py test applications.hotel.tests
+        working-directory: ./backend
