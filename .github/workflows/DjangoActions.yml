@@ -19,6 +19,10 @@ jobs:
         run: pwd
       - name: Muestra archivos
         run: ls
+      - name: Cambia ruta
+        run: cd backend/
+      - name: Muestra archivos 2
+        run: ls
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
