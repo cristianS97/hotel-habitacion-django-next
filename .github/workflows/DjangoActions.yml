@@ -6,26 +6,50 @@ on:
       - main
 
 jobs:
-  build:
+  HotelTesting:
     runs-on: ubuntu-latest
     steps:
-      - name: Cache
+      - name: Cache 💾
         uses: actions/checkout@v4
-      - name: Setup python
+      - name: Setup python 🐍
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-      - name: Install dependencies
+      - name: Install dependencies ⚙️
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Coverage report
+      - name: Coverage report 📊
         run: |
           pip install coverage
           coverage run manage.py test applications.hotel.tests
           coverage report 
         working-directory: ./backend
-      - name: Django testing
+      - name: Django testing 🧪
         run: |
           python3 manage.py test applications.hotel.tests
+        working-directory: ./backend
+
+  HabitacionTesting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Cache 💾
+        uses: actions/checkout@v4
+      - name: Setup python 🐍
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install dependencies ⚙️
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Coverage report 📊
+        run: |
+          pip install coverage
+          coverage run manage.py test applications.habitacion.tests
+          coverage report 
+        working-directory: ./backend
+      - name: Django testing 🧪
+        run: |
+          python3 manage.py test applications.habitacion.tests
         working-directory: ./backend

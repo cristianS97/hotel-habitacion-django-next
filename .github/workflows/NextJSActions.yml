@@ -6,18 +6,18 @@ on:
       - main
 
 jobs:
-  build:
+  NextTesting:
     runs-on: ubuntu-latest
     steps:
-      - name: Cache
+      - name: Cache 💾
         uses: actions/checkout@v4
-      - name: Use Node.js
+      - name: Use Node.js 💻
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
-      - name: Install dependencies
+      - name: Install dependencies ⚙️
         run: npm ci
         working-directory: ./frontend
-      - name: Run tests
+      - name: Run tests 🧪
         run: npm test run test
         working-directory: ./frontend
