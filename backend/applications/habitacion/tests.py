@@ -7,7 +7,7 @@ from applications.habitacion.serializers import HabitacionSerializer
 # Create your tests here.
 client = APIClient()
 
-class HotelTests(TestCase):
+class HabitacionTests(TestCase):
     def setUp(self) -> None:
         Hotel.objects.create(
             nombre="Hotel de prueba",
