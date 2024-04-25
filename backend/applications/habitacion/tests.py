@@ -81,7 +81,7 @@ class HabitacionTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 3)
 
-    def test_get_rooms_1(self):
+    def test_get_rooms_2(self):
         response = client.get('/api/habitacion/?idHotel=2')
         habitaciones = Habitacion.objects.filter(hotel_id=2)
         serializer = HabitacionSerializer(habitaciones, many=True)
