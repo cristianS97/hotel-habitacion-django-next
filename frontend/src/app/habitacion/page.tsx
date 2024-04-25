@@ -4,6 +4,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import IHabitacion from '@/interfaces/interfaceHabitacion';
 import IHotel from "@/interfaces/interfaceHotel";
+import Hotel from "@/clases/Hotel";
 import { useFetchData } from "@/hooks/useFetchData";
 import { Table } from "@/components/Table";
 import { THead } from "@/components/THead";
@@ -21,7 +22,7 @@ export default function HabitacionView() {
   useEffect(() => {
     useFetchData({
       url: "http://localhost:8000/api/habitacion?idHotel="+idHotel,
-      setData: (data: (IHotel | IHabitacion)[]) => setHabitaciones(data as IHabitacion[]),
+      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHabitaciones(data as IHabitacion[]),
       setLoading: setLoading
     });
   }, [])
