@@ -89,3 +89,56 @@ class HabitacionTests(TestCase):
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 4)
+
+    def test_update_room(self):
+        response = client.get('/api/habitacion/1')
+        habitacion = Habitacion.objects.get(pk=1)
+        serializer = HabitacionSerializer(habitacion, many=False)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['numero'], 1)
+        self.assertEqual(response.data['ocupado'], "si")
+
+        client.put('/api/habitacion/1', {"hotel":1, "numero":1, "ocupado":"no"})
+        response = client.get('/api/habitacion/1')
+        habitacion = Habitacion.objects.get(pk=1)
+        serializer = HabitacionSerializer(habitacion, many=False)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['ocupado'], "no")
+
+    def test_create_room(self):
+        client.post('/api/habitacion/', {"hotel":1, "numero":123456789, "ocupado":"no"})
+        response = client.get('/api/habitacion/')
+        habitaciones = Habitacion.objects.all()
+        serializer = HabitacionSerializer(habitaciones, many=True)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 8)
+    
+    def test_delete_room(self):
+        response = client.get('/api/habitacion/')
+        habitaciones = Habitacion.objects.all()
+        serializer = HabitacionSerializer(habitaciones, many=True)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 7)
+
+        client.delete('/api/habitacion/1')
+        response = client.get('/api/habitacion/')
+        habitaciones = Habitacion.objects.all()
+        serializer = HabitacionSerializer(habitaciones, many=True)
+
+        self.assertEqual(response.data, serializer.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 6)
+
+    def test_get_rooms_no_existing_hotel(self):
+        response = client.get('/api/habitacion/?idHotel=3')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 0)
