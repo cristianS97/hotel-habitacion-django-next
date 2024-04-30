@@ -2,7 +2,6 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import Link from 'next/link';
 import IHotel from "@/interfaces/interfaceHotel";
-import IHabitacion from "@/interfaces/interfaceHabitacion";
 import Hotel from "@/clases/Hotel";
 import { useFetchData } from "@/hooks/useFetchData";
 import { Table } from "@/components/Table";
@@ -26,7 +25,7 @@ export default function HotelView() {
   useEffect(() => {
     useFetchData({
       url: "http://localhost:8000/api/hotel",
-      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
+      setData: (data: IHotel[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading
     });
   }, [])
@@ -44,7 +43,7 @@ export default function HotelView() {
 
     useFetchData({
       url: "http://localhost:8000/api/hotel/",
-      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
+      setData: (data: IHotel[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'POST',
       nuevaData: nuevoHotel,
@@ -59,7 +58,7 @@ export default function HotelView() {
 
     useFetchData({
       url: `http://localhost:8000/api/hotel/${idHotel}`,
-      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setNuevoHotel(data as Hotel),
+      setData: (data: IHotel[] | Hotel) => setNuevoHotel(data as Hotel),
       setLoading: setLoading,
       method: 'GET',
       nuevaData: nuevoHotel,
@@ -74,7 +73,7 @@ export default function HotelView() {
 
     useFetchData({
       url: `http://localhost:8000/api/hotel/${idHotel}`,
-      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
+      setData: (data: IHotel[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'PUT',
       nuevaData: nuevoHotel,
@@ -97,7 +96,7 @@ export default function HotelView() {
   const confirmDelete = () => {
     useFetchData({
       url: `http://localhost:8000/api/hotel/${nuevoHotel.id}`,
-      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHoteles(data as IHotel[]),
+      setData: (data: IHotel[] | Hotel) => setHoteles(data as IHotel[]),
       setLoading: setLoading,
       method: 'DELETE',
       nuevaData: nuevoHotel,

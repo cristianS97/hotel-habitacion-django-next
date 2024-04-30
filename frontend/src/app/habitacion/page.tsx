@@ -3,10 +3,8 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import IHabitacion from '@/interfaces/interfaceHabitacion';
-import IHotel from "@/interfaces/interfaceHotel";
-import Hotel from "@/clases/Hotel";
 import Habitacion from "@/clases/Habitacion";
-import { useFetchData } from "@/hooks/useFetchData";
+import { useFetchData } from "@/hooks/useFetchHabitacion";
 import { Table } from "@/components/Table";
 import { THead } from "@/components/THead";
 import { Row } from "@/components/Row";
@@ -28,7 +26,7 @@ export default function HabitacionView() {
   useEffect(() => {
     useFetchData({
       url: "http://localhost:8000/api/habitacion?idHotel="+idHotel,
-      setData: (data: IHotel[] | IHabitacion[] | Hotel) => setHabitaciones(data as IHabitacion[]),
+      setData: (data: IHabitacion[] | Habitacion | Habitacion[]) => setHabitaciones(data as IHabitacion[]),
       setLoading: setLoading
     });
   }, [])
@@ -39,6 +37,24 @@ export default function HabitacionView() {
 
   const handleDelete = (idHabitacion:number):void => {
     setVisibleModalEliminar(true)
+  }
+
+  const cancelDelete = ():void => {
+    setVisibleModalEliminar(false)
+    setNuevaHabitacion({id: 0, hotel: 0, numero: 0, ocupado: ""})
+  }
+
+  const confirmDelete = () => {
+    useFetchData({
+      url: `http://localhost:8000/api/habitacion/${nuevaHabitacion.id}`,
+      setData: (data: IHabitacion[] | Habitacion | Habitacion[]) => setHabitaciones(data as IHabitacion[]),
+      setLoading: setLoading,
+      method: 'DELETE',
+      nuevaData: nuevaHabitacion,
+      listaObjetos: habitaciones,
+      setVisibleModal: setVisibleModalEliminar,
+      setNuevaData: setNuevaHabitacion
+    });
   }
 
   return (
