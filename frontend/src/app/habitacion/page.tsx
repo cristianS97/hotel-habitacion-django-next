@@ -13,6 +13,7 @@ import { TH } from "@/components/TH";
 import { TBody } from "@/components/TBody";
 import { Cell } from "@/components/Cell";
 import { Modal } from "@/components/Modal";
+import { FormularioEliminar } from "@/components/FormularioEliminar";
 
 export default function HabitacionView() {
   const searchParams = useSearchParams();
@@ -56,6 +57,7 @@ export default function HabitacionView() {
 
   const handleDelete = (idHabitacion:number):void => {
     setVisibleModalEliminar(true)
+    setNuevaHabitacion({...nuevaHabitacion, id:idHabitacion})
   }
 
   const cancelDelete = ():void => {
@@ -177,7 +179,11 @@ export default function HabitacionView() {
 
       {visibleModalEliminar ?
         <Modal setVisible={setVisibleModalEliminar}>
-          <h1>Eliminar habitación</h1>
+          <FormularioEliminar
+            cancelDelete={cancelDelete}
+            confirmDelete={confirmDelete}
+            titulo="Seguro que quieres eliminar el hotel?"
+          />
         </Modal>
       : null}
 
