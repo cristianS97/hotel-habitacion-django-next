@@ -17,13 +17,13 @@ export const useFetchData = ({url, setData, setLoading, method='GET', nuevaData=
     }
     else
     {
-        const hotel:Habitacion = new Habitacion(nuevaData);
+        const habitacion:Habitacion = new Habitacion(nuevaData);
         const conf = {
             method: method,
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(hotel)
+            body: JSON.stringify(habitacion)
         };
         fetch(url, conf)
         .then(response => response.json())

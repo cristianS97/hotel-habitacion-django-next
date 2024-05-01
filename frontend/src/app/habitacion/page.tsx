@@ -41,6 +41,17 @@ export default function HabitacionView() {
 
   const iniciaActualizacion = (idHabitacion:number):void => {
     setVisibleModalActualizar(true)
+
+    useFetchData({
+      url: `http://localhost:8000/api/habitacion/${idHabitacion}`,
+      setData: (data: IHabitacion[] | Habitacion) => setNuevaHabitacion(data as Habitacion),
+      setLoading: setLoading,
+      method: 'GET',
+      nuevaData: nuevaHabitacion,
+      listaObjetos: habitaciones,
+      setVisibleModal: setVisibleModalRegistro,
+      setNuevaData: setNuevaHabitacion
+    });
   }
 
   const handleDelete = (idHabitacion:number):void => {
@@ -86,6 +97,21 @@ export default function HabitacionView() {
       ...nuevaHabitacion,
       [name]: value
     })
+  }
+
+  const handleUpdate = (e: React.FormEvent<HTMLFormElement>, idHabitacion:number):void => {
+    e.preventDefault();
+
+    useFetchData({
+      url: `http://localhost:8000/api/habitacion/${idHabitacion}`,
+      setData: (data: IHabitacion[] | Habitacion) => setHabitaciones(data as IHabitacion[]),
+      setLoading: setLoading,
+      method: 'PUT',
+      nuevaData: nuevaHabitacion,
+      listaObjetos: habitaciones,
+      setVisibleModal: setVisibleModalActualizar,
+      setNuevaData: setNuevaHabitacion
+    });
   }
 
   return (
@@ -139,7 +165,13 @@ export default function HabitacionView() {
 
       {visibleModalActualizar ?
         <Modal setVisible={setVisibleModalActualizar}>
-          <h1>Actualización de habitación</h1>
+          <FormularioHabitacion
+            handleHabitacionSubmit={(e) => handleUpdate(e, nuevaHabitacion.id)}
+            handleHabitacionChange={handleHabitacionChange}
+            nuevaHabitacion={nuevaHabitacion}
+            tituloModal="Actualiza tu habitación"
+            textoBoton="Actualizar"
+          />
         </Modal>
       : null}
 
