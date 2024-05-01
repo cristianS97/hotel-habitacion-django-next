@@ -1,9 +1,10 @@
 'use client'
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent } from "react";
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import IHabitacion from '@/interfaces/interfaceHabitacion';
 import Habitacion from "@/clases/Habitacion";
+import { FormularioHabitacion } from "@/components/FormularioHabitacion";
 import { useFetchData } from "@/hooks/useFetchHabitacion";
 import { Table } from "@/components/Table";
 import { THead } from "@/components/THead";
@@ -31,6 +32,13 @@ export default function HabitacionView() {
     });
   }, [])
 
+  useEffect(() => {
+    if(idHotel!==null)
+    {
+      setNuevaHabitacion({...nuevaHabitacion, hotel:parseInt(idHotel), ocupado:'no', numero:0})
+    }
+  }, [idHotel])
+
   const iniciaActualizacion = (idHabitacion:number):void => {
     setVisibleModalActualizar(true)
   }
@@ -55,6 +63,29 @@ export default function HabitacionView() {
       setVisibleModal: setVisibleModalEliminar,
       setNuevaData: setNuevaHabitacion
     });
+  }
+
+  const handleHabitacionSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    useFetchData({
+      url: "http://localhost:8000/api/habitacion/",
+      setData: (data: IHabitacion[] | Habitacion) => setHabitaciones(data as IHabitacion[]),
+      setLoading: setLoading,
+      method: 'POST',
+      nuevaData: nuevaHabitacion,
+      listaObjetos: habitaciones,
+      setVisibleModal: setVisibleModalRegistro,
+      setNuevaData: setNuevaHabitacion
+    });
+  };
+
+  const handleHabitacionChange = (e: ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setNuevaHabitacion({
+      ...nuevaHabitacion,
+      [name]: value
+    })
   }
 
   return (
@@ -96,7 +127,13 @@ export default function HabitacionView() {
 
       {visibleModalRegistro ?
         <Modal setVisible={setVisibleModalRegistro}>
-          <h1>Registro de habitación</h1>
+          <FormularioHabitacion
+            handleHabitacionSubmit={handleHabitacionSubmit}
+            handleHabitacionChange={handleHabitacionChange}
+            nuevaHabitacion={nuevaHabitacion}
+            tituloModal="Registra tu habitación"
+            textoBoton="Registrar"
+          />
         </Modal>
       : null}
 
