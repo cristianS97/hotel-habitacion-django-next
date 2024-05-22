@@ -9,7 +9,7 @@ jobs:
   HotelTesting:
     runs-on: ubuntu-latest
     services:
-      db:
+      postgres:
         image: postgres
         env:
           POSTGRES_DB: hotel
@@ -17,6 +17,7 @@ jobs:
           POSTGRES_PASSWORD: qwerty
         ports:
           - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Cache 💾
         uses: actions/checkout@v4
@@ -39,7 +40,7 @@ jobs:
           DATABASE_NAME: hotel
           DATABASE_USER: postgres
           DATABASE_PASS: qwerty
-          DATABASE_HOST: postgres
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
       - name: Django testing 🧪
         run: |
