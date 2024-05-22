@@ -2,6 +2,7 @@ version: '3.7'
 
 services:
   postgres:
+    container_name: postgres
     image: postgres
     restart: always
     ports:
@@ -46,6 +47,14 @@ services:
     depends_on:
       - postgres
       - adminer
+
+  frontend:
+    container_name: frontend
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - /node_modules
 
 networks:
   net:
