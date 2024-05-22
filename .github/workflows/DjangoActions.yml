@@ -46,7 +46,7 @@ jobs:
           DATABASE_NAME: hotel
           DATABASE_USER: postgres
           DATABASE_PASS: qwerty
-          DATABASE_HOST: postgres
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
       - name: Django testing 🧪
         run: |
@@ -55,7 +55,7 @@ jobs:
           DATABASE_NAME: hotel
           DATABASE_USER: postgres
           DATABASE_PASS: qwerty
-          DATABASE_HOST: postgres
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
         working-directory: ./backend
 
@@ -104,7 +104,7 @@ jobs:
           DATABASE_NAME: hotel
           DATABASE_USER: postgres
           DATABASE_PASS: qwerty
-          DATABASE_HOST: postgres
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
       - name: Django testing 🧪
         run: |
@@ -113,6 +113,6 @@ jobs:
           DATABASE_NAME: hotel
           DATABASE_USER: postgres
           DATABASE_PASS: qwerty
-          DATABASE_HOST: postgres
+          DATABASE_HOST: localhost
           DATABASE_PORT: 5432
         working-directory: ./backend
