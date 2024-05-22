@@ -32,8 +32,8 @@ jobs:
         working-directory: ./backend
       - name: Wait for PostgreSQL to be ready ⏳
         run: |
-          until pg_isready -h localhost -p 5432; do
-            echo "Waiting for postgres at localhost:5432 to be ready..."
+          until pg_isready -h postgres -p 5432; do
+            echo "Waiting for postgres at postgres:5432 to be ready..."
             sleep 2
           done
       - name: Coverage report 📊
@@ -46,11 +46,18 @@ jobs:
           DATABASE_NAME: hotel
           DATABASE_USER: postgres
           DATABASE_PASS: qwerty
-          DATABASE_HOST: localhost
+          DATABASE_HOST: postgres
           DATABASE_PORT: 5432
+        working-directory: ./backend
       - name: Django testing 🧪
         run: |
           python3 manage.py test applications.hotel.tests
+        env:
+          DATABASE_NAME: hotel
+          DATABASE_USER: postgres
+          DATABASE_PASS: qwerty
+          DATABASE_HOST: postgres
+          DATABASE_PORT: 5432
         working-directory: ./backend
 
   HabitacionTesting:
@@ -78,6 +85,12 @@ jobs:
         working-directory: ./backend
       - name: Wait for PostgreSQL to be ready ⏳
         run: |
+          until pg_isready -h postgres -p 5432; do
+            echo "Waiting for postgres at postgres:5432 to be ready..."
+            sleep 2
+          done
+      - name: Wait for PostgreSQL to be ready ⏳
+        run: |
           until pg_isready -h localhost -p 5432; do
             echo "Waiting for postgres at localhost:5432 to be ready..."
             sleep 2
@@ -97,4 +110,10 @@ jobs:
       - name: Django testing 🧪
         run: |
           python3 manage.py test applications.habitacion.tests
+        env:
+          DATABASE_NAME: hotel
+          DATABASE_USER: postgres
+          DATABASE_PASS: qwerty
+          DATABASE_HOST: postgres
+          DATABASE_PORT: 5432
         working-directory: ./backend
