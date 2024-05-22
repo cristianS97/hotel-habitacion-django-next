@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  HotelTesting:
+  DjangoTesting:
     runs-on: ubuntu-latest
     services:
       postgres:
@@ -18,8 +18,13 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    strategy:
+      matrix:
+        app:
+          - hotel
+          - habitacion
     steps:
-      - name: Cache 💾
+      - name: Checkout code 💾
         uses: actions/checkout@v4
       - name: Setup python 🐍
         uses: actions/setup-python@v5
@@ -36,10 +41,10 @@ jobs:
             echo "Waiting for postgres at localhost:5432 to be ready..."
             sleep 2
           done
-      - name: Coverage report 📊
+      - name: Run coverage report 📊
         run: |
           pip install coverage
-          coverage run manage.py test applications.hotel.tests
+          coverage run manage.py test applications.${{ matrix.app }}.tests
           coverage report 
         working-directory: ./backend
         env:
@@ -48,51 +53,9 @@ jobs:
           POSTGRES_PASSWORD: qwerty
           POSTGRES_SERVER: localhost
           POSTGRES_PORT: 5432
-      - name: Django testing 🧪
+      - name: Run Django tests 🧪
         run: |
-          python3 manage.py test applications.hotel.tests
-        env:
-          POSTGRES_DB: hotel
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: qwerty
-          POSTGRES_SERVER: localhost
-          POSTGRES_PORT: 5432
-        working-directory: ./backend
-
-  HabitacionTesting:
-    runs-on: ubuntu-latest
-    services:
-      db:
-        image: postgres
-        env:
-          POSTGRES_DB: hotel
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: qwerty
-        ports:
-          - 5432:5432
-    steps:
-      - name: Cache 💾
-        uses: actions/checkout@v4
-      - name: Setup python 🐍
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.9'
-      - name: Install dependencies ⚙️
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-        working-directory: ./backend
-      - name: Wait for PostgreSQL to be ready ⏳
-        run: |
-          until pg_isready -h localhost -p 5432; do
-            echo "Waiting for postgres at localhost:5432 to be ready..."
-            sleep 2
-          done
-      - name: Coverage report 📊
-        run: |
-          pip install coverage
-          coverage run manage.py test applications.habitacion.tests
-          coverage report 
+          python3 manage.py test applications.${{ matrix.app }}.tests
         working-directory: ./backend
         env:
           POSTGRES_DB: hotel
@@ -100,13 +63,3 @@ jobs:
           POSTGRES_PASSWORD: qwerty
           POSTGRES_SERVER: localhost
           POSTGRES_PORT: 5432
-      - name: Django testing 🧪
-        run: |
-          python3 manage.py test applications.habitacion.tests
-        env:
-          POSTGRES_DB: hotel
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: qwerty
-          POSTGRES_SERVER: localhost
-          POSTGRES_PORT: 5432
-        working-directory: ./backend
