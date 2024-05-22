@@ -84,7 +84,7 @@ jobs:
         working-directory: ./backend
       - name: Wait for PostgreSQL to be ready ⏳
         run: |
-          until pg_isready -h postgres -p 5432; do
+          until pg_isready -h localhost -p 5432; do
             echo "Waiting for postgres at localhost:5432 to be ready..."
             sleep 2
           done
