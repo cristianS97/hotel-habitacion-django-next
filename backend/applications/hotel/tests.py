@@ -36,12 +36,12 @@ class HotelTests(TestCase):
         self.assertEqual(len(response.data), 2)
         self.assertEqual(response.data[0]['nombre'], "Hotel de prueba")
         self.assertEqual(response.data[1]['nombre'], "Hotel de prueba 2")
-        self.assertEqual(response.data[0]['id'], 1)
+        self.assertEqual(response.data[0]['id'], 6)
         self.assertEqual(response.data[1]['id'], 2)
 
     def test_get_hotel(self):
-        response = client.get('/api/hotel/1')
-        hotel = Hotel.objects.get(pk=1)
+        response = client.get('/api/hotel/6')
+        hotel = Hotel.objects.get(pk=6)
         serializer = HotelSerializer(hotel, many=False)
 
         self.assertEqual(response.data, serializer.data)
@@ -49,8 +49,8 @@ class HotelTests(TestCase):
         self.assertEqual(response.data['nombre'], "Hotel de prueba")
 
     def test_update_hotel(self):
-        response = client.get('/api/hotel/1')
-        hotel = Hotel.objects.get(pk=1)
+        response = client.get('/api/hotel/6')
+        hotel = Hotel.objects.get(pk=6)
         serializer = HotelSerializer(hotel, many=False)
 
         self.assertEqual(response.data, serializer.data)
@@ -92,4 +92,4 @@ class HotelTests(TestCase):
 
         self.assertEqual(response.data, serializer.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
+        self.assertEqual(len(response.data), 2)
