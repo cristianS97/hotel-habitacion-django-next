@@ -37,7 +37,7 @@ class HotelTests(TestCase):
         self.assertEqual(response.data[0]['nombre'], "Hotel de prueba")
         self.assertEqual(response.data[1]['nombre'], "Hotel de prueba 2")
         self.assertEqual(response.data[0]['id'], 6)
-        self.assertEqual(response.data[1]['id'], 2)
+        self.assertEqual(response.data[1]['id'], 7)
 
     def test_get_hotel(self):
         response = client.get('/api/hotel/6')
@@ -49,8 +49,8 @@ class HotelTests(TestCase):
         self.assertEqual(response.data['nombre'], "Hotel de prueba")
 
     def test_update_hotel(self):
-        response = client.get('/api/hotel/6')
-        hotel = Hotel.objects.get(pk=6)
+        response = client.get('/api/hotel/7')
+        hotel = Hotel.objects.get(pk=7)
         serializer = HotelSerializer(hotel, many=False)
 
         self.assertEqual(response.data, serializer.data)
