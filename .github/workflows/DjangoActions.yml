@@ -30,6 +30,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
         working-directory: ./backend
+      - name: Wait for PostgreSQL to be ready ⏳
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for postgres at localhost:5432 to be ready..."
+            sleep 2
+          done
       - name: Coverage report 📊
         run: |
           pip install coverage
@@ -70,6 +76,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
         working-directory: ./backend
+      - name: Wait for PostgreSQL to be ready ⏳
+        run: |
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for postgres at localhost:5432 to be ready..."
+            sleep 2
+          done
       - name: Coverage report 📊
         run: |
           pip install coverage
