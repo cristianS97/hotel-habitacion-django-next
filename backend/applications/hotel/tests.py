@@ -43,7 +43,7 @@ class HotelTests(TestCase):
         hotel = Hotel.objects.all()
         serializer = HotelSerializer(hotel, many=True)
         id = serializer.data[0]['id']
-        response = client.get('/api/hotel/'+id)
+        response = client.get('/api/hotel/'+str(id))
         hotel = Hotel.objects.get(pk=id)
         serializer = HotelSerializer(hotel, many=False)
 
@@ -55,7 +55,7 @@ class HotelTests(TestCase):
         hotel = Hotel.objects.all()
         serializer = HotelSerializer(hotel, many=True)
         id = serializer.data[0]['id']
-        response = client.get('/api/hotel/'+id)
+        response = client.get('/api/hotel/'+str(id))
         hotel = Hotel.objects.get(pk=id)
         serializer = HotelSerializer(hotel, many=False)
 
@@ -63,8 +63,8 @@ class HotelTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['nombre'], "Hotel de prueba")
 
-        client.put('/api/hotel/'+id, {"nombre":"Hotel de prueba 2", "calle":"Calle 13 2", "numero":1232, "comuna":"Santiago", "telefono":12345679, "email":"correo2@correo.com"})
-        response = client.get('/api/hotel/'+id)
+        client.put('/api/hotel/'+str(id), {"nombre":"Hotel de prueba 2", "calle":"Calle 13 2", "numero":1232, "comuna":"Santiago", "telefono":12345679, "email":"correo2@correo.com"})
+        response = client.get('/api/hotel/'+str(id))
         hotel = Hotel.objects.get(pk=id)
         serializer = HotelSerializer(hotel, many=False)
 
