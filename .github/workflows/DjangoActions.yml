@@ -48,7 +48,6 @@ jobs:
           DATABASE_PASS: qwerty
           DATABASE_HOST: postgres
           DATABASE_PORT: 5432
-        working-directory: ./backend
       - name: Django testing 🧪
         run: |
           python3 manage.py test applications.hotel.tests
