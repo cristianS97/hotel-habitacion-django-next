@@ -40,6 +40,9 @@ class HotelTests(TestCase):
         self.assertEqual(response.data[1]['id'], 7)
 
     def test_get_hotel(self):
+        hotel = Hotel.objects.all()
+        serializer = HotelSerializer(hotel, many=True)
+        print(serializer.data)
         response = client.get('/api/hotel/6')
         hotel = Hotel.objects.get(pk=6)
         serializer = HotelSerializer(hotel, many=False)
