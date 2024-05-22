@@ -62,7 +62,7 @@ class HabitacionTests(TestCase):
             ocupado='si'
         )
         Habitacion.objects.create(
-            hotel=Hotel.objects.get(pk=2),
+            hotel=Hotel.objects.get(pk=serializer.data[1]['id']),
             numero=104,
             ocupado='si'
         )
