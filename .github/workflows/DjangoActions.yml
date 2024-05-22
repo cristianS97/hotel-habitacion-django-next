@@ -43,20 +43,20 @@ jobs:
           coverage report 
         working-directory: ./backend
         env:
-          DATABASE_NAME: hotel
-          DATABASE_USER: postgres
-          DATABASE_PASS: qwerty
-          DATABASE_HOST: localhost
-          DATABASE_PORT: 5432
+          POSTGRES_DB: hotel
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: qwerty
+          POSTGRES_SERVER: localhost
+          POSTGRES_PORT: 5432
       - name: Django testing 🧪
         run: |
           python3 manage.py test applications.hotel.tests
         env:
-          DATABASE_NAME: hotel
-          DATABASE_USER: postgres
-          DATABASE_PASS: qwerty
-          DATABASE_HOST: localhost
-          DATABASE_PORT: 5432
+          POSTGRES_DB: hotel
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: qwerty
+          POSTGRES_SERVER: localhost
+          POSTGRES_PORT: 5432
         working-directory: ./backend
 
   HabitacionTesting:
@@ -95,18 +95,18 @@ jobs:
           coverage report 
         working-directory: ./backend
         env:
-          DATABASE_NAME: hotel
-          DATABASE_USER: postgres
-          DATABASE_PASS: qwerty
-          DATABASE_HOST: localhost
-          DATABASE_PORT: 5432
+          POSTGRES_DB: hotel
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: qwerty
+          POSTGRES_SERVER: localhost
+          POSTGRES_PORT: 5432
       - name: Django testing 🧪
         run: |
           python3 manage.py test applications.habitacion.tests
         env:
-          DATABASE_NAME: hotel
-          DATABASE_USER: postgres
-          DATABASE_PASS: qwerty
-          DATABASE_HOST: localhost
-          DATABASE_PORT: 5432
+          POSTGRES_DB: hotel
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: qwerty
+          POSTGRES_SERVER: localhost
+          POSTGRES_PORT: 5432
         working-directory: ./backend
