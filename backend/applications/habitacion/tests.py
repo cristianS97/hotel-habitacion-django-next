@@ -91,7 +91,7 @@ class HabitacionTests(TestCase):
     def test_get_rooms_2(self):
         hotel = Hotel.objects.all()
         serializer = HotelSerializer(hotel, many=True)
-        id = serializer.data[2]['id']
+        id = serializer.data[1]['id']
         response = client.get('/api/habitacion/?idHotel='+str(id))
         habitaciones = Habitacion.objects.filter(hotel_id=id)
         serializer = HabitacionSerializer(habitaciones, many=True)
@@ -113,7 +113,7 @@ class HabitacionTests(TestCase):
         self.assertEqual(response.data['numero'], 1)
         self.assertEqual(response.data['ocupado'], "si")
 
-        client.put('/api/habitacion/'+str(id), {"hotel":1, "numero":1, "ocupado":"no"})
+        client.put('/api/habitacion/'+str(id), {"hotel":1, "numero":id, "ocupado":"no"})
         response = client.get('/api/habitacion/'+str(id))
         habitacion = Habitacion.objects.get(pk=id)
         serializer = HabitacionSerializer(habitacion, many=False)
