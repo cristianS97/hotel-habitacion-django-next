@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - net
+    volumes:
+      - ./postgres/dbfiles:/docker-entrypoint-initdb.d
+      - ./postgres/data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: postgres
+
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    depends_on:
+      - postgres
+    networks:
+      - net
+    ports:
+        - "8080:8080"
+
+  backend:
+    container_name: backend
+    build: ./backend
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    networks:
+      - net
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: hotel
+      POSTGRES_SERVER: postgres
+      POSTGRES_PORT: 5432
+    depends_on:
+      - postgres
+      - adminer
+
+networks:
+  net:
+
+volumes:
+  postgres_dbfiles:
+  postgres_data:
